@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Feinstaub Detektor</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .card,
+        h1,
+        #chartContainer,
+        .row {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            border-radius: 1rem;
+        }
+
+        .card-title {
+            font-size: 2rem;
+        }
+
+        .card-text {
+            font-size: 4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid" id="website">
+        <h1 class="text-center font-weight-light">Feinstaub Detektor</h1>
+        <div class="row">
+            <div class="col-xl-2"></div>
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 aqi-score-wrapper">
+                <div class="card" id="pm10-card">
+                    <div class="card-body">
+                        <p class="card-title">PM<sub>10</sub></p>
+                        <p class="card-text text-center font-weight-bold">{{ pm10 }}<small>µg/m<sup>3</sup></small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 aqi-score-wrapper">
+                <div class="card" id="pm25-card">
+                    <div class="card-body">
+                        <p class="card-title">PM<sub>2.5</sub></p>
+                        <p class="card-text text-center font-weight-bold">{{ pm25 }}<small>µg/m<sup>3</sup></small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2"></div>
+            <div class="col-xl-2"></div>
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 temp-score-wrapper">
+                <div class="card" id="temp-card">
+                    <div class="card-body">
+                        <p class="card-title">Temperatur</p>
+                        <p class="card-text text-center font-weight-bold">{{ temp }}<small>°C</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 hum-score-wrapper">
+                <div class="card" id="hum-card">
+                    <div class="card-body">
+                        <p class="card-title">Luftfeuchtigkeit</p>
+                        <p class="card-text text-center font-weight-bold">{{ hum }}<small>%</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2"></div>
+        </div>
+        <div class="row">
+            <div id="timeframeBtn" class="btn-group btn-group-toggle" data-toggle="buttons" style="margin: auto">
+                <label class="timeframeBtn btn btn-outline-dark active" id="day">
+                    <input type="radio" name="options" autocomplete="off"> 24 Hours
+                </label>
+                <label class="timeframeBtn btn btn-outline-dark" id="week">
+                    <input type="radio" name="options" autocomplete="off"> 1 Week
+                </label>
+                <label class="timeframeBtn btn btn-outline-dark" id="month">
+                    <input type="radio" name="options" autocomplete="off"> 1 Month
+                </label>
+                <label class="timeframeBtn btn btn-outline-dark" id="year">
+                    <input type="radio" name="options" autocomplete="off"> 1 Year
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 canvas" id="pm-container">
+            </div>
+            <div class="col-6 canvas" id="temp-hum-container">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="lib/canvasjs-non-commercial-2.3.2/canvasjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "feinstaubdetektor",
+  "version": "1.0.0",
+  "description": "script to get data from sds011 and dht22 to store them and see them via a web interface",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "author": "kpelz",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.3.3",
+    "nodemon": "^1.19.4"
+  }
+}
