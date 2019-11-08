@@ -100,9 +100,9 @@ function doSomeStatisticsOn(data) {
     for (let i in data.data) {
         let elem = data.data[i];
         data.maxPm10 = data.maxPm10 ? Math.max(data.maxPm10, elem.pm10) : elem.pm10;
-        data.minPm10 = data.minPm10 ? Math.min(data.maxPm10, elem.pm10) : elem.pm10;
+        data.minPm10 = data.minPm10 ? Math.min(data.minPm10, elem.pm10) : elem.pm10;
         data.maxPm25 = data.maxPm25 ? Math.max(data.maxPm25, elem.pm25) : elem.pm25;
-        data.minPm25 = data.minPm25 ? Math.min(data.maxPm25, elem.pm25) : elem.pm25;
+        data.minPm25 = data.minPm25 ? Math.min(data.minPm25, elem.pm25) : elem.pm25;
         data.maxTemp = data.maxTemp ? Math.min(data.maxTemp, elem.temp) : elem.temp;
         data.minTemp = data.minTemp ? Math.min(data.minTemp, elem.temp) : elem.temp;
         data.maxHum = data.maxHum ? Math.min(data.maxHum, elem.hum) : elem.hum;
