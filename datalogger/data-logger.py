@@ -4,7 +4,6 @@ import struct
 import sys
 import time
 import json
-from datetime import datetime
 import requests
 import logging
 from logging.handlers import TimedRotatingFileHandler
@@ -26,7 +25,7 @@ DHT_SENSOR = Adafruit_DHT.DHT22
 formatter = logging.Formatter(
     "%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
 handler = TimedRotatingFileHandler(
-    "/home/pi/feinstaubDetektor/datalogger/logfile.log", when='midnight', backupCount=10)
+    "/home/pi/logfile.log", when='midnight', backupCount=10)
 handler.setFormatter(formatter)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
@@ -41,10 +40,8 @@ ser.flushInput()
 
 byte, data = 0, ""
 
-
 def dump(d, prefix=''):
     logger.info(prefix + ' '.join(x.encode('hex') for x in d))
-
 
 def construct_command(cmd, data=[]):
     assert len(data) <= 12
@@ -53,36 +50,28 @@ def construct_command(cmd, data=[]):
     ret = "\xaa\xb4" + chr(cmd)
     ret += ''.join(chr(x) for x in data)
     ret += "\xff\xff" + chr(checksum) + "\xab"
-
     if DEBUG:
         dump(ret, '> ')
     return ret
-
 
 def process_data(d):
     r = struct.unpack('<HHxxBB', d[2:])
     pm25 = r[0]/10.0
     pm10 = r[1]/10.0
-    checksum = sum(ord(v) for v in d[2:8]) % 256
     return [pm25, pm10]
-
 
 def read_response():
     byte = 0
     while byte != "\xaa":
         byte = ser.read(size=1)
-
     d = ser.read(size=9)
-
     if DEBUG:
         dump(d, '< ')
     return byte + d
 
-
 def cmd_set_mode(mode=MODE_QUERY):
     ser.write(construct_command(CMD_MODE, [0x1, mode]))
     read_response()
-
 
 def cmd_query_data():
     ser.write(construct_command(CMD_QUERY_DATA))
@@ -92,23 +81,19 @@ def cmd_query_data():
         values = process_data(d)
     return values
 
-
 def cmd_set_sleep(sleep=1):
     mode = 0 if sleep else 1
     ser.write(construct_command(CMD_SLEEP, [0x1, mode]))
     read_response()
 
-
 def do_your_job():
     cmd_set_sleep(0)
     cmd_set_mode(1)
-
     for t in range(14):
         cmd_query_data()
         Adafruit_DHT.read_retry(
             DHT_SENSOR, DHT_PIN)
         time.sleep(2)
-
     values = cmd_query_data()
     if values is None:
         logger.error("Failed to retrieve data from SDS011")
@@ -131,15 +116,14 @@ def do_your_job():
 
     # send data to luftdaten.info and our own database
     push_to_luftdaten(values, humidity, temperature)
-    push_to_database(values, humidity, temperature)
+    # push_to_database(values, humidity, temperature)
 
     # print("Going to sleep for 4.5min...")
     cmd_set_mode(0)
     cmd_set_sleep()
 
-
 def push_to_luftdaten(values, humidity, temperature):
-    url = "https://api.luftdaten.info/v1/push-sensor-data/"
+    url = "https://api.sensor.community/v1/push-sensor-data/"
     x_pin_sds011 = '1'
     x_pin_dht22 = '7'
     x_sensor = 'raspi-000000007da5a515'

@@ -1,0 +1,10 @@
+[Unit]
+Description=Feinstaub Detektor Skript               
+After=multi-user.target
+
+[Service]
+User=pi
+ExecStart=/usr/bin/python /home/pi/data-logger.py
+
+[Install]
+WantedBy=multi-user.target

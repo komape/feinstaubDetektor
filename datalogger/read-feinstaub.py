@@ -56,26 +56,30 @@ def process_data(d):
     return [pm25, pm10]
 
 # wake up sensor
+print("wake up sensor")
 cmd_set_sleep(0)
 cmd_set_mode(1)
 
 # warm up sensor
+print("warm up sensor")
 for t in range(14):
+    print(14 - t)
     cmd_query_data()
     time.sleep(2)
 
 # read values
+print("read values")
 values = cmd_query_data()
 if (values is None):
     print("ERROR: failed to read from SDS011")
 
 # round values
+print("round values")
 values[0] = round(values[0], 1)
 values[1] = round(values[1], 1)
 
 # print values
-print("pm10=" + str(values[1]))
-print("pm25=" + str(values[0]))
+print("pm10: ", values[1], ", pm25:", values[0])
 
 cmd_set_mode(0)
 cmd_set_sleep()
